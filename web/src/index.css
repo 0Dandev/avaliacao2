@@ -1,0 +1,72 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  /* Cor do fundo principal (bem escuro, como Udemy) */
+  background-color: #1c1d1f; 
+  /* Cor do texto principal (branco suave) */
+  color: rgba(255, 255, 255, 0.87); 
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#root {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: left;
+}
+
+/* --- Estilos dos Componentes (Tema Dark) --- */
+
+/* Card (Página de Detalhes) */
+.card {
+  /* Um pouco mais claro que o fundo, para "flutuar" */
+  background-color: #2e2f31; 
+  border: 1px solid #444;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+/* Lista (Página Home) */
+.list-group-item {
+  background-color: #2e2f31;
+  border-color: #444;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+/* Item da lista ao passar o mouse */
+.list-group-item-action:hover,
+.list-group-item-action:focus {
+  background-color: #3d3e40;
+  color: #fff;
+}
+
+/* Cor do Spinner */
+.spinner-border {
+  color: #fff;
+}
+.btn-purple {
+  background-color: #a435f0;
+  border-color: #a435f0;
+  color: #fff; /* Garante que o texto seja branco */
+}
+
+.btn-purple:hover {
+  background-color: #8710d8;
+  border-color: #8710d8;
+  color: #fff;
+}
