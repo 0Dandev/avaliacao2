@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom'; // Importe useNavigate
 import axios from 'axios';
-import { Card, Spinner, Alert, Button } from 'react-bootstrap';
+import { Card, Spinner, Alert, Button, Row, Col } from 'react-bootstrap';
 
-// URL base da API
-const API_BASE_URL = 'https://proweb.leoproti.com.br/alunos';
+// Usando o Proxy
+const API_BASE_URL = '/api/alunos';
 
 function DetalhesAluno() {
-  // Pega o parâmetro 'id' da URL
   const { id } = useParams(); 
+  const navigate = useNavigate(); // Hook para redirecionar
   
-  const [aluno, setAluno] = useState(null); // Guarda o objeto do aluno
+  const [aluno, setAluno] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -18,56 +18,72 @@ function DetalhesAluno() {
     const fetchAluno = async () => {
       try {
         setLoading(true);
-        // Busca dados do aluno específico usando o ID da URL
         const response = await axios.get(`${API_BASE_URL}/${id}`);
         setAluno(response.data);
         setError(null);
       } catch (err) {
         setError("Não foi possível carregar os detalhes do aluno.");
-        console.error("Erro ao buscar aluno:", err);
       } finally {
         setLoading(false);
       }
     };
-
     fetchAluno();
-  }, [id]); // O useEffect agora depende do 'id'
-           // Se o id mudar (ex: navegar de um aluno pra outro), ele busca de novo
+  }, [id]);
 
-  if (loading) {
-    return <Spinner animation="border" />;
-  }
+  // --- FUNÇÃO DE EXCLUIR ---
+  const handleDelete = async () => {
+    // Confirmação simples do navegador
+    if (window.confirm("Tem certeza que deseja excluir este aluno? Essa ação não pode ser desfeita.")) {
+      try {
+        await axios.delete(`${API_BASE_URL}/${id}`);
+        alert("Aluno excluído com sucesso!");
+        navigate('/'); // Volta para a lista
+      } catch (err) {
+        console.error(err);
+        alert("Erro ao excluir aluno. Tente novamente.");
+      }
+    }
+  };
 
-  if (error) {
-    return <Alert variant="danger">{error}</Alert>;
-  }
+  if (loading) return <Spinner animation="border" className="d-block mx-auto mt-5" />;
+  if (error) return <Alert variant="danger">{error}</Alert>;
+  if (!aluno) return <Alert variant="warning">Aluno não encontrado.</Alert>;
 
-  // Se o aluno não for encontrado (ex: ID não existe)
-  if (!aluno) {
-    return <Alert variant="warning">Aluno não encontrado.</Alert>;
-  }
-
- 
   return (
-    <div>
-      <h1 className="mb-4">Detalhes do Aluno</h1>
-      <Card style={{ width: '18rem' }}>
-        <Card.Body>
-          <Card.Title>{aluno.nome}</Card.Title>
-          <Card.Text>
-            <strong>Matrícula:</strong> {aluno.matricula}
-          </Card.Text>
-          <Card.Text>
-            <strong>CPF:</strong> {aluno.cpf}
-          </Card.Text>
-          {/* Adicione outros campos se desejar */}
-          
-          <Button as={Link} to="/" variant="primary">
-            Voltar para a Lista
-          </Button>
-        </Card.Body>
-      </Card>
-    </div>
+    <Row className="justify-content-center mt-5">
+      <Col md={8} lg={6}>
+        <Card className="shadow">
+          <Card.Header as="h5">
+            Ficha do Aluno
+          </Card.Header>
+          <Card.Body className="p-4">
+            <Card.Title className="display-6 mb-4">{aluno.nome}</Card.Title>
+            
+            <div className="mb-3">
+              <strong style={{ color: '#a0a0a0' }}>Matrícula:</strong>
+              <p className="fs-5">{aluno.matricula}</p>
+            </div>
+            
+            <div className="mb-4">
+              <strong style={{ color: '#a0a0a0' }}>CPF:</strong>
+              <p className="fs-5">{aluno.cpf || 'Não informado'}</p>
+            </div>
+            
+            <div className="d-grid gap-2">
+              {/* Botão de Excluir (Vermelho) */}
+              <Button variant="danger" onClick={handleDelete} className="mb-2">
+                🗑️ Excluir Aluno
+              </Button>
+
+              {/* Botão de Voltar (Roxo) */}
+              <Button as={Link} to="/" className="btn-purple">
+                &larr; Voltar para a Lista
+              </Button>
+            </div>
+          </Card.Body>
+        </Card>
+      </Col>
+    </Row>
   );
 }
 

@@ -1,69 +1,94 @@
-// web/src/pages/Home.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { ListGroup, Spinner, Alert } from 'react-bootstrap';
+import { ListGroup, Spinner, Alert, Badge, Button } from 'react-bootstrap'; // <--- Adicionei Button aqui
 
-
-// URL da API de Alunos
-const API_URL = 'https://proweb.leoproti.com.br/alunos';
+// Usando o Proxy
+const API_URL = '/api/alunos';
 
 function Home() {
-  const [alunos, setAlunos] = useState([]); // Guarda a lista de alunos
-  const [loading, setLoading] = useState(true); // Indica se está carregando
-  const [error, setError] = useState(null); // Guarda mensagens de erro
+  // Inicializa como array vazio para evitar erros no primeiro render
+  const [alunos, setAlunos] = useState([]); 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // useEffect para buscar os dados da API quando o componente for montado
   useEffect(() => {
-    // Função assíncrona para buscar os dados
     const fetchAlunos = async () => {
       try {
         setLoading(true);
-        // Faz a requisição GET para a API 
         const response = await axios.get(API_URL);
-        // Atualiza o estado com os dados recebidos
-        setAlunos(response.data);
-        setError(null); // Limpa qualquer erro anterior
+        
+        // --- ÁREA DE DEBUG E SEGURANÇA ---
+        console.log("Dados recebidos da API:", response.data); 
+
+        if (Array.isArray(response.data)) {
+            setAlunos(response.data);
+            setError(null);
+        } else {
+            // Se não for array, mostra erro e não quebra a tela
+            console.error("A resposta da API não é uma lista:", response.data);
+            setError("A API retornou um formato de dados inválido.");
+        }
+        // ----------------------------------
+
       } catch (err) {
-        // Em caso de erro, guarda a mensagem
         setError("Não foi possível carregar a lista de alunos.");
         console.error("Erro ao buscar alunos:", err);
       } finally {
-        // Independentemente de sucesso ou erro, para de carregar
         setLoading(false);
       }
     };
 
     fetchAlunos();
-  }, []); // O array vazio [] faz com que o useEffect rode apenas uma vez
+  }, []);
 
-  // Se estiver carregando, exibe um Spinner
   if (loading) {
-    return <Spinner animation="border" role="status">
-      <span className="visually-hidden">Carregando...</span>
-    </Spinner>;
+    return (
+      <div className="text-center mt-5">
+        <Spinner animation="border" role="status" />
+        <p className="mt-2">Carregando dados...</p>
+      </div>
+    );
   }
 
-  // Se houver um erro, exibe um Alerta
   if (error) {
     return <Alert variant="danger">{error}</Alert>;
   }
 
-  // Se tudo deu certo, exibe a lista de alunos
   return (
     <div>
-      <h1 className="mb-4">Lista de Alunos</h1>
-      <ListGroup>
-        {/* Mapeia o array de alunos e cria um item de lista para cada um */}
-        {alunos.map((aluno) => (
-          // Cada item é um Link para a rota de detalhes [cite: 24, 25]
+      {/* Cabeçalho melhorado com Botão de Adicionar */}
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 style={{ fontWeight: '700', color: '#fff', marginBottom: 0 }}>Alunos</h1>
+            <small className="text-muted">Gerenciamento de matrículas</small>
+        </div>
+        
+        <div className="d-flex gap-2 align-items-center">
+            {/* Proteção: Só acessa .length se alunos for array */}
+            <Badge bg="secondary" className="p-2">{Array.isArray(alunos) ? alunos.length : 0} total</Badge>
+            
+            {/* Botão para a rota /adicionar */}
+            <Button as={Link} to="/adicionar" variant="success" size="sm">
+                + Novo Aluno
+            </Button>
+        </div>
+      </div>
+
+      <ListGroup className="shadow-sm">
+        {/* Proteção: Só faz o map se alunos for um array */}
+        {Array.isArray(alunos) && alunos.map((aluno) => (
           <ListGroup.Item 
             key={aluno.id}
-            as={Link} // Renderiza o item como um componente <Link>
-            to={`/aluno/${aluno.id}`} // Define o destino do link
-            action // Adiciona estilo de hover
+            as={Link} 
+            to={`/aluno/${aluno.id}`} 
+            action 
+            className="d-flex justify-content-between align-items-center py-3"
           >
-            {aluno.nome}
+            <span style={{ fontSize: '1.1rem', fontWeight: '500' }}>
+              {aluno.nome}
+            </span>
+            <small className="text-muted">Ver detalhes &rarr;</small>
           </ListGroup.Item>
         ))}
       </ListGroup>
