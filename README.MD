@@ -50,5 +50,44 @@ Pré-requisitos: Node.js instalado.
 
 ### 1. Clonar o repositório
 ```bash
-git clone [https://github.com/SEU_USUARIO/avaliacao2.git](https://github.com/SEU_USUARIO/avaliacao2.git)
+git clone [https://github.com/0Dandev/avaliacao2.git](https://github.com/0Dandev/avaliacao2.git)
 cd avaliacao2
+
+ 2. Rodar a Aplicação Web
+    cd web
+    npm install
+    npm run dev
+
+ 3. Rodar a Aplicação Mobile
+    cd mobile
+    npm install
+    npx expo start
+
+Testes Automatizados (Web)
+cd web
+npm test
+
+Estrutura de Pastas
+
+AVALIACAO02/
+├── web/                # Projeto React + Vite
+│   ├── src/
+│   │   ├── pages/      # Home, DetalhesAluno, NovoAluno
+│   │   ├── index.css   # Estilização Global (Tema Neon)
+│   │   └── ...
+│   ├── vercel.json     # Configuração de Proxy para Produção
+│   └── ...
+│
+├── mobile/             # Projeto React Native + Expo
+│   ├── app/            # Rotas do Expo Router (index, [id])
+│   └── ...
+│
+└── README.md           # Documentação do Projeto
+
+Notas de Desenvolvimento
+
+Proxy Reverso: Foi configurado um arquivo vercel.json na pasta web para lidar com problemas de CORS ao consumir a API proweb.leoproti.com.br em produção.
+
+Design System: O CSS utiliza variáveis globais para facilitar a manutenção do tema escuro e dos efeitos de transparência.
+
+Desenvolvido por Dannylo Stevan Rodrigues Dias
