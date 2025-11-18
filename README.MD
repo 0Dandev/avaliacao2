@@ -1,46 +1,54 @@
-# Estudo de Caso: Aplicação Web e Mobile (AV2)
+# 🎓 Estudo de Caso: Sistema de Gestão de Alunos (Web & Mobile)
 
-Este projeto é um estudo de caso que implementa uma aplicação Web (React + Vite) e Mobile (React Native + Expo) para listar e detalhar alunos de uma API.
+Este repositório contém a solução completa para a Avaliação 2, implementando uma aplicação fullstack (Frontend Web e Mobile) para consumo de API, rotas dinâmicas e testes automatizados.
 
-## 🚀 Estrutura do Projeto
+## 🔗 Deploy (Aplicação Web)
 
-* `/web`: Contém a aplicação Web feita com React e Vite.
-* `/mobile`: Contém a aplicação Mobile feita com React Native e Expo.
-
----
-
-## 🖥️ Aplicação Web (React + Vite)
-
-### Funcionalidades
-* [cite_start]`/`: Página inicial que lista todos os alunos[cite: 23].
-* [cite_start]`/aluno/:id`: Página que mostra os detalhes de um aluno específico[cite: 24].
-
-### Como Rodar Localmente
-1.  Navegue até a pasta web: `cd web`
-2.  Instale as dependências: `npm install`
-3.  Inicie o servidor de desenvolvimento: `npm run dev`
-
-### Como Rodar os Testes
-1.  Navegue até a pasta web: `cd web`
-2.  [cite_start]Execute o Vitest: `npm test` [cite: 58]
+Acesse a aplicação rodando em produção na Vercel:
+👉 **[https://avaliacao2-henna.vercel.app]**
 
 ---
 
-## 📱 Aplicação Mobile (React Native + Expo)
+## 🚀 Tecnologias Utilizadas
 
-### Funcionalidades
-* [cite_start]Tela Inicial: Lista todos os alunos da API[cite: 48].
-* [cite_start]Tela de Detalhes: Exibe os detalhes (matrícula, cpf) do aluno selecionado[cite: 49].
+O projeto foi estruturado como um monorepo contendo duas aplicações distintas:
 
-### Como Rodar Localmente
-1.  Navegue até a pasta mobile: `cd mobile`
-2.  Instale as dependências: `npm install`
-3.  Inicie o servidor do Expo: `npx expo start`
-4.  Escaneie o QR Code com o app Expo Go no seu celular.
+### 💻 Web (`/web`)
+* **Core:** React, Vite
+* **Estilização:** React Bootstrap + CSS Customizado (Tema Futurista/Glassmorphism)
+* **Rotas:** React Router DOM
+* **HTTP:** Axios (com configuração de Proxy para CORS)
+* **Testes:** Vitest + React Testing Library
+
+### 📱 Mobile (`/mobile`)
+* **Core:** React Native, Expo
+* **Roteamento:** Expo Router (File-based routing)
+* **HTTP:** Axios
 
 ---
 
-## 🔗 Deploy (Vercel)
+## ✨ Funcionalidades Implementadas
 
-A aplicação Web está disponível no seguinte link:
-* **Link do Deploy:** (Vamos preencher isso no próximo passo)
+### Aplicação Web
+- [x] **Listagem de Alunos:** Consumo de API REST com feedback de carregamento.
+- [x] **Detalhes do Aluno:** Rota dinâmica (`/aluno/:id`) exibindo dados específicos.
+- [x] **Cadastro (Bônus):** Formulário para adicionar novos alunos (POST).
+- [x] **Exclusão (Bônus):** Funcionalidade para remover alunos (DELETE).
+- [x] **Design Premium:** Interface com tema escuro, efeitos de neon suave e glassmorphism.
+- [x] **Testes Automatizados:** Teste unitário verificando a renderização da Home.
+
+### Aplicação Mobile
+- [x] **Lista Mobile:** FlatList otimizada consumindo a mesma API.
+- [x] **Navegação Stack:** Transição fluida entre Lista e Detalhes.
+- [x] **Tratamento de Erros:** Exibição amigável em caso de falha na rede.
+
+---
+
+## 🛠️ Como Rodar Localmente
+
+Pré-requisitos: Node.js instalado.
+
+### 1. Clonar o repositório
+```bash
+git clone [https://github.com/SEU_USUARIO/avaliacao2.git](https://github.com/SEU_USUARIO/avaliacao2.git)
+cd avaliacao2
